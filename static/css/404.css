@@ -1,0 +1,18 @@
+h1 {
+    text-align: center;
+    color: rgb(165, 57, 57);
+    background-color: rgb(127, 127, 127);
+    border: 10px solid black;
+  }
+h2 {
+    text-align: center;
+    background-color: brown;
+    border: 10px solid black;
+}
+  p {
+    color: red;
+  }
+a {
+    text-align:right;
+    color: rgb(60, 60, 9);
+}
