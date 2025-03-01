@@ -1,35 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morse Code Translation</title>
+    <title>神秘代码解析</title>
     <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--primary-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            line-height: 1.6;
         }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            margin: 20px;
+            transform-style: preserve-3d;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
         h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-            text-color: red;
+            font-size: 2.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
         }
-        p {
-            font-size: 1.2em;
-            color: #555;
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+        }
+
+        .main-text {
+            font-size: 1.2rem;
+            color: #666;
+            margin: 1.5rem 0;
+        }
+
+        .secret-message {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-left: 4px solid var(--accent-color);
+            margin: 2rem 0;
+            text-align: left;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .secret-message.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .reveal-btn:hover {
+            background: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .watermark {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            pointer-events: none;
+            user-select: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
-    <div>
-        <h1>私人赵梓豪的留言</h1>
-        <p>我真欠揍，你打我撒，你打我撒！</p>
+    <div class="container">
+        <div class="watermark">AWA</div>
+        <h1>awa</h1>
+        <p class="main-text">我只是awa，没有别的意思</p>
+        <button class="reveal-btn">揭开秘密</button>
+        <div class="secret-message"></div>
+        <!-- 你好，我有别的意思，你看起来像sb -->
     </div>
+
+    <script>
+        // 获取隐藏的注释内容
+        function getHiddenComment() {
+            const comments = document.body.innerHTML.match(/<!--([\s\S]*?)-->/);
+            return comments ? comments[1].trim() : '';
+        }
+
+        // DOM元素
+        const secretMessage = document.querySelector('.secret-message');
+        const revealBtn = document.querySelector('.reveal-btn');
+
+        // 按钮点击事件
+        revealBtn.addEventListener('click', () => {
+            secretMessage.textContent = getHiddenComment();
+            secretMessage.classList.add('reveal');
+            revealBtn.style.display = 'none';
+        });
+
+        // 初始动画
+        setTimeout(() => {
+            document.querySelector('.container').style.transform = 'translateY(0)';
+        }, 100);
+    </script>
 </body>
 </html>
