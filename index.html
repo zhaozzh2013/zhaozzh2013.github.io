@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简播放器</title>
+    <!-- 内置播放器样式 -->
+    <style>
+        #player {
+            width: 100%;
+            height: 56.25vw; /* 16:9比例 */
+            background: #000;
+        }
+        .video-list {
+            padding: 10px;
+        }
+        .video-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 视频列表 -->
+    <div class="video-list">
+        <div class="video-item" onclick="playVideo('videos/song1.mp4')">
+            歌曲1 - 示例音乐
+        </div>
+        <div class="video-item" onclick="playVideo('videos/song2.mp4')">
+            歌曲2 - 测试曲目
+        </div>
+    </div>
+
+    <!-- 播放器容器 -->
+    <video id="player" controls playsinline></video>
+
+    <!-- 内置脚本 -->
+    <script>
+        const player = document.getElementById('player');
+        
+        // 播放视频函数
+        function playVideo(url) {
+            player.src = url;
+            player.play();
+            
+            // 自动进入全屏（需要用户手势触发）
+            player.requestFullscreen().catch(err => {
+                console.log('全屏请求失败:', err);
+            });
+        }
+
+        // 自动调整高度
+        window.onresize = () => {
+            player.style.height = player.offsetWidth * 9/16 + 'px';
+        };
+    </script>
+</body>
+</html>
