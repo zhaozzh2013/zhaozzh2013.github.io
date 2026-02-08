@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>后台管理 — 本地 CMS</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    main{max-width:1000px;margin:36px auto;padding:18px}
+    .grid{display:grid;gap:12px}
+    .row{display:flex;gap:8px;align-items:center}
+    textarea{min-height:80px}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .list{margin-top:12px;border:1px solid var(--border);padding:12px;border-radius:8px;background:var(--card)}
+    .item{display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px dashed rgba(0,0,0,0.03)}
+  </style>
+</head>
+<body>
+  <main>
+    <a href="index.html" style="color:var(--accent);text-decoration:none;">← 返回</a>
+    <h1>后台管理（本地）</h1>
+    <p class="small">这是一个纯前端的本地 CMS，数据保存在浏览器的 localStorage 中，仅在本机有效。</p>
+
+    <section class="grid">
+      <h2>发布文章</h2>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+        <input id="newCategory" placeholder="添加新分类（例如 game）">
+        <button id="addCategory" class="button">添加分类</button>
+      </div>
+      <div id="categoriesList" class="list"></div>
+      <input id="postTitle" placeholder="标题">
+      <input id="postCategory" placeholder="分类（life/design/work）">
+      <textarea id="postBody" placeholder="正文（纯文本示例）"></textarea>
+      <div class="row">
+        <button id="savePost" class="button">保存文章到本地</button>
+        <button id="exportPosts" class="button">导出 JSON</button>
+      </div>
+      <div id="postsList" class="list"></div>
+    </section>
+
+    <section class="grid" style="margin-top:18px;">
+      <h2>管理游戏（添加下载链接）</h2>
+      <input id="gameTitle" placeholder="游戏标题">
+      <input id="gameDesc" placeholder="简短描述">
+      <input id="gameDownload" placeholder="下载链接（相对或绝对）例如 downloads/pixel-car.zip">
+      <div class="row">
+        <!DOCTYPE html>
+        <html lang="zh-CN">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>Redirect</title>
+            <meta http-equiv="refresh" content="0; url=admin/index.html">
+          </head>
+          <body>
+            如果未自动跳转，请点击： <a href="admin/index.html">管理后台</a>
+          </body>
+          </html>
+      </div>
