@@ -3,59 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>极简播放器</title>
-    <!-- 内置播放器样式 -->
-    <style>
-        #player {
-            width: 100%;
-            height: 56.25vw; /* 16:9比例 */
-            background: #000;
-        }
-        .video-list {
-            padding: 10px;
-        }
-        .video-item {
-            padding: 10px;
-            margin: 5px 0;
-            background: #f0f0f0;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <title>林间小记 · 个人博客</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 视频列表 -->
-    <div class="video-list">
-        <div class="video-item" onclick="playVideo('videos/song1.mp4')">
-            歌曲1 - 示例音乐
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-mark">松</span>
+            <div>
+                <h1>林间小记</h1>
+                <p>记录生活、设计与灵感的慢速电波</p>
+            </div>
         </div>
-        <div class="video-item" onclick="playVideo('videos/song2.mp4')">
-            歌曲2 - 测试曲目
+        <nav class="site-nav">
+            <a href="#posts">文章</a>
+            <a href="#about">关于我</a>
+            <a href="#newsletter">订阅</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-text">
+                <h2>欢迎来到我的博客。</h2>
+                <p>
+                    这里是一个轻量的个人博客原型，你可以按分类筛选文章，并收藏
+                    喜欢的内容。所有交互在前端完成，方便你继续扩展成完整的站点。
+                </p>
+                <div class="hero-actions">
+                    <button class="button" id="resetFilter">查看全部文章</button>
+                    <button class="button ghost" id="openSaved">查看收藏</button>
+                </div>
+            </div>
+            <div class="hero-card">
+                <h3>本周推荐</h3>
+                <p>《把灵感写成计划：如何在 30 分钟内完成一次完整复盘》</p>
+                <div class="meta">
+                    <span>📌 专栏精选</span>
+                    <span>6 分钟阅读</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="controls" id="posts">
+            <div class="filters">
+                <button class="chip active" data-filter="all">全部</button>
+                <button class="chip" data-filter="life">生活方式</button>
+                <button class="chip" data-filter="design">设计灵感</button>
+                <button class="chip" data-filter="work">工作方法</button>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索标题或摘要">
+                <span class="hint">实时过滤</span>
+            </div>
+        </section>
+
+        <section class="post-grid" id="postList">
+            <article class="post-card" data-category="life">
+                <div>
+                    <h3>把周末拆成三段，快乐更容易被记住</h3>
+                    <p>用简单的时间块记录，让休息变成可回忆的故事。</p>
+                </div>
+                <div class="post-meta">
+                    <span>生活方式</span>
+                    <span>2024-06-12</span>
+                </div>
+                <button class="save-btn" data-post="weekend">收藏</button>
+            </article>
+            <article class="post-card" data-category="design">
+                <div>
+                    <h3>我常用的 5 个构图提示词</h3>
+                    <p>随身携带的小卡片，让灵感不会在路上走丢。</p>
+                </div>
+                <div class="post-meta">
+                    <span>设计灵感</span>
+                    <span>2024-06-05</span>
+                </div>
+                <button class="save-btn" data-post="layout">收藏</button>
+            </article>
+            <article class="post-card" data-category="work">
+                <div>
+                    <h3>一个表格搞定每周复盘</h3>
+                    <p>借助简单模版，把经历变成下一步行动。</p>
+                </div>
+                <div class="post-meta">
+                    <span>工作方法</span>
+                    <span>2024-05-29</span>
+                </div>
+                <button class="save-btn" data-post="review">收藏</button>
+            </article>
+            <article class="post-card" data-category="life">
+                <div>
+                    <h3>早起不是目的，节奏才是</h3>
+                    <p>找到自己的节奏后，清晨会变得很温柔。</p>
+                </div>
+                <div class="post-meta">
+                    <span>生活方式</span>
+                    <span>2024-05-17</span>
+                </div>
+                <button class="save-btn" data-post="morning">收藏</button>
+            </article>
+            <article class="post-card" data-category="design">
+                <div>
+                    <h3>情绪板到底怎么做才好用？</h3>
+                    <p>从杂乱图片里找到方向感的实践笔记。</p>
+                </div>
+                <div class="post-meta">
+                    <span>设计灵感</span>
+                    <span>2024-05-03</span>
+                </div>
+                <button class="save-btn" data-post="moodboard">收藏</button>
+            </article>
+            <article class="post-card" data-category="work">
+                <div>
+                    <h3>一天 3 次小复盘</h3>
+                    <p>利用 3 个时间点记录心流，避免忙完却没留下成果。</p>
+                </div>
+                <div class="post-meta">
+                    <span>工作方法</span>
+                    <span>2024-04-22</span>
+                </div>
+                <button class="save-btn" data-post="microreview">收藏</button>
+            </article>
+        </section>
+
+        <section class="about" id="about">
+            <div>
+                <h2>关于我</h2>
+                <p>
+                    我是一名自由职业设计师，热爱把复杂的方法简化成小工具。
+                    如果你也喜欢慢节奏的创作，欢迎一起交流。
+                </p>
+            </div>
+            <ul>
+                <li>📍 常驻：杭州</li>
+                <li>✉️ 邮箱：hello@linjian.blog</li>
+                <li>🧭 关键词：设计、内容、生活方式</li>
+            </ul>
+        </section>
+
+        <section class="newsletter" id="newsletter">
+            <div>
+                <h2>订阅周记</h2>
+                <p>每周一封短邮件，分享 3 个小故事 + 1 个工具包。</p>
+            </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="输入你的邮箱">
+                <button class="button" type="button">订阅</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 林间小记 · 由你扩展成真正的博客</p>
+    </footer>
+
+    <div class="saved-panel" id="savedPanel" aria-hidden="true">
+        <div class="saved-content">
+            <div class="saved-header">
+                <h3>已收藏文章</h3>
+                <button class="close-btn" id="closeSaved">关闭</button>
+            </div>
+            <ul id="savedList">
+                <li>还没有收藏文章。</li>
+            </ul>
         </div>
     </div>
 
-    <!-- 播放器容器 -->
-    <video id="player" controls playsinline></video>
-
-    <!-- 内置脚本 -->
-    <script>
-        const player = document.getElementById('player');
-        
-        // 播放视频函数
-        function playVideo(url) {
-            player.src = url;
-            player.play();
-            
-            // 自动进入全屏（需要用户手势触发）
-            player.requestFullscreen().catch(err => {
-                console.log('全屏请求失败:', err);
-            });
-        }
-
-        // 自动调整高度
-        window.onresize = () => {
-            player.style.height = player.offsetWidth * 9/16 + 'px';
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
