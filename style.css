@@ -654,14 +654,38 @@ footer {
 
 /* Mobile nav toggle (hidden by default on small screens) */
 @media (max-width: 720px) {
-    .site-nav { display: none; width: 100%; }
-    body.nav-open .site-nav { display: flex; flex-direction: column; gap: 12px; padding: 8px 0; }
-    .nav-toggle { display: inline-flex; align-items: center; justify-content: center; gap:6px; border: 1px solid var(--border); padding: 8px 10px; border-radius: 8px; background: transparent; cursor: pointer; }
-    .nav-toggle:focus { outline: 2px solid rgba(217,118,42,0.18); }
+    /* 在移动端完全隐藏导航（不展示折叠菜单） */
+    .site-nav { display: none !important; width: 100%; }
+    /* 隐藏所有用于显示/切换导航的按钮 */
+    .nav-toggle { display: none !important; }
     .site-header .brand { width:100%; }
 }
 
 @media (max-width: 520px) {
     .nav-toggle { padding: 10px; }
     .site-nav a { padding: 12px 8px; display:block; }
+}
+
+/* 移动端增大暗黑模式按钮并让其更显眼 */
+@media (max-width: 720px) {
+    .theme-toggle {
+        padding: 10px 14px;
+        font-size: 1.2rem;
+        border-radius: 12px;
+        min-width: 48px;
+        height: 44px;
+        display: inline-grid;
+        place-items: center;
+    }
+}
+
+@media (max-width: 520px) {
+    .theme-toggle {
+        padding: 12px 16px;
+        font-size: 1.25rem;
+        min-width: 52px;
+        height: 48px;
+    }
+    /* admin 页面的主题按钮也同样放大 */
+    #themeToggle2 { padding: 12px 16px; font-size: 1.25rem; min-width:52px; height:48px; }
 }
