@@ -11,8 +11,3 @@
 1. 直接在浏览器中打开 `index.html`。
 2. 想要开发体验，可用任意静态服务器，例如使用 `npx http-server` 或者 VS Code 的 Live Server 插件。
 
-改进建议：
-- 将联系表单接入后端或第三方服务（例如 Netlify Forms、Formspree）。
-- 增加文章页面与路由，或者使用静态站点生成器如 Eleventy。
-
-作者：你（自由扩展）
