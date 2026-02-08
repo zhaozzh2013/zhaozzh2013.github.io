@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>后台管理 — 本地 CMS</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    main{max-width:1000px;margin:36px auto;padding:18px}
+    .grid{display:grid;gap:12px}
+    .row{display:flex;gap:8px;align-items:center}
+    textarea{min-height:80px}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .list{margin-top:12px;border:1px solid var(--border);padding:12px;border-radius:8px;background:var(--card)}
+    .item{display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px dashed rgba(0,0,0,0.03)}
+    a.back{color:var(--accent);text-decoration:none;font-weight:600}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <img src="../icon.svg" class="brand-mark" alt="logo">
+      <div>
+        <h1>后台</h1>
+        <p>管理你的文章与作品</p>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="../index.html">主页</a>
+    </nav>
+    <div class="header-actions">
+      <button id="navToggle2" class="nav-toggle" aria-label="切换导航" aria-expanded="false">☰</button>
+      <button id="themeToggle2" class="theme-toggle" aria-label="切换暗黑模式">🌙</button>
+    </div>
+  </header>
+
+  <main>
+    <a class="back" href="../index.html">← 返回主页</a>
+    <h1>后台管理（本地）</h1>
+    <p class="small">这是一个纯前端的本地 CMS，数据保存在浏览器的 localStorage 中，仅在本机有效。</p>
+
+    <section class="grid">
+      <h2>发布文章</h2>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+        <input id="newCategory" placeholder="添加新分类（例如 game）">
+        <button id="addCategory" class="button">添加分类</button>
+      </div>
+      <div id="categoriesList" class="list"></div>
+      <input id="postTitle" placeholder="标题">
+      <input id="postCategory" placeholder="分类（life/design/work）">
+      <textarea id="postBody" placeholder="正文（纯文本示例）"></textarea>
+      <div class="row">
+        <button id="savePost" class="button">保存文章到本地</button>
+        <button id="exportPosts" class="button">导出 JSON</button>
+      </div>
+      <div id="postsList" class="list"></div>
+    </section>
+
+    <section class="grid" style="margin-top:18px;">
+      <h2>管理游戏（添加下载链接）</h2>
+      <input id="gameTitle" placeholder="游戏标题">
+      <input id="gameDesc" placeholder="简短描述">
+      <input id="gameDownload" placeholder="下载链接（相对或绝对）例如 ../downloads/pixel-car.zip">
+      <div class="row">
+        <button id="saveGame" class="button">保存游戏</button>
+        <button id="exportGames" class="button">导出 JSON</button>
+      </div>
+      <div id="gamesList" class="list"></div>
+    </section>
+
+    <section class="grid" style="margin-top:18px;">
+      <h2>联系人记录</h2>
+      <p class="small">显示通过首页“联系我”表单提交的联系人信息（保存在浏览器本地）。</p>
+      <div style="display:flex;gap:8px;align-items:center; margin-top:8px;">
+        <button id="exportContacts" class="button">导出联系人</button>
+        <button id="clearContacts" class="button">清空联系人</button>
+      </div>
+      <div id="contactsList" class="list"></div>
+    </section>
+
+    <section style="margin-top:18px;">
+      <h2>使用说明</h2>
+      <ol class="small">
+        <li>保存后数据保存在浏览器本地；要在站点中显示这些内容，你可以复制 HTML 片段并粘贴到 `index.html`，或使用复制片段功能。</li>
+      </ol>
+    </section>
+  </main>
+
+  <script>
+    // 简易本地 CMS（与根目录 admin.html 功能保持一致）
+    const postsKey = 'cms_posts';
+    const gamesKey = 'cms_games';
+    const catsKey = 'cms_categories';
+
+    function load(key){
+      try{return JSON.parse(localStorage.getItem(key) || '[]')}catch(e){return []}
+    }
+    function save(key,data){localStorage.setItem(key, JSON.stringify(data))}
+
+    const postsList = document.getElementById('postsList');
+    const gamesList = document.getElementById('gamesList');
+
+    function renderPosts(){
+      const items = load(postsKey);
+      postsList.innerHTML = items.map((p, i)=>`<div class="item"><div><strong>${p.title}</strong><div class="small">${p.category} · ${p.body.slice(0,80)}...</div></div><div><button data-i="${i}" class="copyPost">复制片段</button> <button data-i="${i}" class="delPost">删除</button></div></div>`).join('') || '<p class="small">还没有文章。</p>';
+      postsList.querySelectorAll('.delPost').forEach(btn=>btn.addEventListener('click', e=>{const i=e.target.dataset.i; const arr=load(postsKey); arr.splice(i,1); save(postsKey,arr); renderPosts()}));
+      postsList.querySelectorAll('.copyPost').forEach(btn=>btn.addEventListener('click', e=>{const i=e.target.dataset.i; const p=load(postsKey)[i]; const snippet = `<article class="post-card" data-category="${p.category}">\n  <div>\n    <h3>${p.title}</h3>\n    <p>${p.body}</p>\n  </div>\n  <div class=\"post-meta\">\n    <span>${p.category}</span>\n    <span>${new Date().toISOString().split('T')[0]}</span>\n  </div>\n  <button class=\"save-btn\">收藏</button>\n</article>`; navigator.clipboard.writeText(snippet).then(()=>alert('文章片段已复制到剪贴板'))}))
+    }
+
+    function renderGames(){
+      const items = load(gamesKey);
+      gamesList.innerHTML = items.map((g, i)=>`<div class="item"><div><strong>${g.title}</strong><div class="small">${g.desc}</div></div><div><a class="button" href="${g.download}" download>下载</a> <button data-i="${i}" class="copyGame">复制片段</button> <button data-i="${i}" class="delGame">删除</button></div></div>`).join('') || '<p class="small">还没有游戏。</p>';
+      gamesList.querySelectorAll('.delGame').forEach(btn=>btn.addEventListener('click', e=>{const i=e.target.dataset.i; const arr=load(gamesKey); arr.splice(i,1); save(gamesKey,arr); renderGames()}));
+      gamesList.querySelectorAll('.copyGame').forEach(btn=>btn.addEventListener('click', e=>{const i=e.target.dataset.i; const g=load(gamesKey)[i]; const snippet = `<article class=\"work-card\" data-title=\"${g.title}\" data-desc=\"${g.desc}\">\n  <div class=\"thumb\"><img src=\"../icon.svg\" alt=\"${g.title} 缩略图\"></div>\n  <h3>${g.title}</h3>\n  <p>${g.desc}</p>\n  <div class=\"work-actions\">\n    <a class=\"button\" href=\"${g.download}\">打开</a>\n  </div>\n</article>`; navigator.clipboard.writeText(snippet).then(()=>alert('作品片段已复制到剪贴板'))}))
+    }
+
+    document.getElementById('savePost').addEventListener('click', ()=>{
+      const title = document.getElementById('postTitle').value.trim();
+      const category = document.getElementById('postCategory').value.trim() || 'life';
+      const body = document.getElementById('postBody').value.trim();
+      if(!title||!body){alert('请填写标题与正文');return}
+      const arr = load(postsKey); arr.unshift({title,category,body}); save(postsKey,arr); renderPosts(); alert('文章已保存到本地，可在“复制片段”后粘贴到 `index.html`');
+    });
+
+    document.getElementById('saveGame').addEventListener('click', ()=>{
+      const title = document.getElementById('gameTitle').value.trim();
+      const desc = document.getElementById('gameDesc').value.trim();
+      const download = document.getElementById('gameDownload').value.trim();
+      if(!title||!download){alert('请填写标题与下载链接');return}
+      const arr = load(gamesKey); arr.unshift({title,desc,download}); save(gamesKey,arr); renderGames(); alert('游戏已保存到本地，可复制片段粘贴到 `index.html` 或作品页面');
+    });
+
+    document.getElementById('exportPosts').addEventListener('click', ()=>{ const data=localStorage.getItem(postsKey)||'[]'; navigator.clipboard.writeText(data).then(()=>alert('文章 JSON 已复制'))});
+    document.getElementById('exportGames').addEventListener('click', ()=>{ const data=localStorage.getItem(gamesKey)||'[]'; navigator.clipboard.writeText(data).then(()=>alert('游戏 JSON 已复制'))});
+
+    renderPosts(); renderGames();
+    // categories
+    const catsKey = 'cms_categories';
+    function loadCats(){ try{return JSON.parse(localStorage.getItem(catsKey)||'[]')}catch(e){return []} }
+    function saveCats(v){ localStorage.setItem(catsKey, JSON.stringify(v)) }
+    const categoriesList = document.getElementById('categoriesList');
+    function renderCats(){ const arr=loadCats(); categoriesList.innerHTML = arr.map((c,i)=>`<div class="item"><div>${c}</div><div><button data-i="${i}" class="delCat">删除</button></div></div>`).join('')||'<p class="small">无分类。</p>'; categoriesList.querySelectorAll('.delCat').forEach(btn=>btn.addEventListener('click', e=>{const i=e.target.dataset.i; const a=loadCats(); a.splice(i,1); saveCats(a); renderCats();})) }
+    document.getElementById('addCategory').addEventListener('click', ()=>{ const v=document.getElementById('newCategory').value.trim(); if(!v){alert('请输入分类名');return} const a=loadCats(); if(!a.includes(v)){a.unshift(v); saveCats(a); renderCats(); alert('分类已添加')} else alert('分类已存在'); document.getElementById('newCategory').value=''; })
+    renderCats();
+
+    // contacts (from index contact form)
+    const contactsList = document.getElementById('contactsList');
+    function renderContacts(){ const s = JSON.parse(localStorage.getItem('contacts')||'[]'); contactsList.innerHTML = s.length? s.map(c=>`<div class="item"><div><strong>${c.name}</strong><div class="small">${c.email} ${c.phone? '· ' + c.phone : ''}</div><div class="small">${c.message.slice(0,120)}</div></div></div>`).join('') : '<p class="small">暂无联系人记录。</p>'; }
+    document.getElementById('exportContacts').addEventListener('click', ()=>{ const s = localStorage.getItem('contacts')||'[]'; navigator.clipboard.writeText(s).then(()=>alert('联系人 JSON 已复制')) });
+    document.getElementById('clearContacts').addEventListener('click', ()=>{ if(confirm('确定清空所有联系人记录？')){ localStorage.removeItem('contacts'); renderContacts(); } });
+    renderContacts();
+
+    // 主题同步：读取并应用主站的 theme，本页也写回相同的 localStorage 键
+    const themeToggle2 = document.getElementById('themeToggle2');
+    function applyAdminTheme() {
+      const t = localStorage.getItem('theme') || 'light';
+      document.body.classList.toggle('dark', t === 'dark');
+      themeToggle2.textContent = t === 'dark' ? '☀️' : '🌙';
+    }
+    themeToggle2.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark');
+      const newTheme = isDark ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      themeToggle2.textContent = isDark ? '☀️' : '🌙';
+    });
+    // apply on load
+    applyAdminTheme();
+    // listen for external theme changes
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'theme') applyAdminTheme();
+    });
+    // admin mobile nav toggle
+    const navToggle2 = document.getElementById('navToggle2');
+    if (navToggle2) {
+      navToggle2.addEventListener('click', () => {
+        const opened = document.body.classList.toggle('nav-open');
+        navToggle2.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+      document.querySelectorAll('.site-nav a').forEach(a=>a.addEventListener('click', ()=>{
+        if (document.body.classList.contains('nav-open')){
+          document.body.classList.remove('nav-open');
+          navToggle2.setAttribute('aria-expanded','false');
+        }
+      }));
+    }
+  </script>
+</body>
+</html>
+*** End Patch

@@ -3,23 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>林间小记 · 个人博客</title>
+    <title>博客</title>
+    <link rel="icon" href="icon.svg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="site-header">
         <div class="brand">
-            <span class="brand-mark">松</span>
+            <img src="icon.svg" class="brand-mark" alt="logo">
             <div>
-                <h1>林间小记</h1>
-                <p>记录生活、设计与灵感的慢速电波</p>
+                <h1>作品集</h1>
+                <p>展示我做的有趣小项目与游戏</p>
             </div>
         </div>
         <nav class="site-nav">
             <a href="#posts">文章</a>
             <a href="#about">关于我</a>
             <a href="#newsletter">订阅</a>
+            <a href="#works">作品</a>
         </nav>
+        <div class="header-actions">
+            <button id="navToggle" class="nav-toggle" aria-label="切换导航" aria-expanded="false">☰</button>
+            <button id="themeToggle" class="theme-toggle" aria-label="切换暗黑模式">🌙</button>
+        </div>
     </header>
 
     <main>
@@ -59,72 +65,7 @@
         </section>
 
         <section class="post-grid" id="postList">
-            <article class="post-card" data-category="life">
-                <div>
-                    <h3>把周末拆成三段，快乐更容易被记住</h3>
-                    <p>用简单的时间块记录，让休息变成可回忆的故事。</p>
-                </div>
-                <div class="post-meta">
-                    <span>生活方式</span>
-                    <span>2024-06-12</span>
-                </div>
-                <button class="save-btn" data-post="weekend">收藏</button>
-            </article>
-            <article class="post-card" data-category="design">
-                <div>
-                    <h3>我常用的 5 个构图提示词</h3>
-                    <p>随身携带的小卡片，让灵感不会在路上走丢。</p>
-                </div>
-                <div class="post-meta">
-                    <span>设计灵感</span>
-                    <span>2024-06-05</span>
-                </div>
-                <button class="save-btn" data-post="layout">收藏</button>
-            </article>
-            <article class="post-card" data-category="work">
-                <div>
-                    <h3>一个表格搞定每周复盘</h3>
-                    <p>借助简单模版，把经历变成下一步行动。</p>
-                </div>
-                <div class="post-meta">
-                    <span>工作方法</span>
-                    <span>2024-05-29</span>
-                </div>
-                <button class="save-btn" data-post="review">收藏</button>
-            </article>
-            <article class="post-card" data-category="life">
-                <div>
-                    <h3>早起不是目的，节奏才是</h3>
-                    <p>找到自己的节奏后，清晨会变得很温柔。</p>
-                </div>
-                <div class="post-meta">
-                    <span>生活方式</span>
-                    <span>2024-05-17</span>
-                </div>
-                <button class="save-btn" data-post="morning">收藏</button>
-            </article>
-            <article class="post-card" data-category="design">
-                <div>
-                    <h3>情绪板到底怎么做才好用？</h3>
-                    <p>从杂乱图片里找到方向感的实践笔记。</p>
-                </div>
-                <div class="post-meta">
-                    <span>设计灵感</span>
-                    <span>2024-05-03</span>
-                </div>
-                <button class="save-btn" data-post="moodboard">收藏</button>
-            </article>
-            <article class="post-card" data-category="work">
-                <div>
-                    <h3>一天 3 次小复盘</h3>
-                    <p>利用 3 个时间点记录心流，避免忙完却没留下成果。</p>
-                </div>
-                <div class="post-meta">
-                    <span>工作方法</span>
-                    <span>2024-04-22</span>
-                </div>
-                <button class="save-btn" data-post="microreview">收藏</button>
-            </article>
+            <!-- 文章列表由本地 CMS 注入（localStorage: cms_posts） -->
         </section>
 
         <section class="about" id="about">
@@ -142,15 +83,31 @@
             </ul>
         </section>
 
-        <section class="newsletter" id="newsletter">
+        <!-- 订阅周记 已移除，联系表单用于直接联系 -->
+
+        <section class="contact" id="contact">
             <div>
-                <h2>订阅周记</h2>
-                <p>每周一封短邮件，分享 3 个小故事 + 1 个工具包。</p>
+                <h2>联系我</h2>
+                <p>有想法、合作或问题？发条消息给我，我会尽快回复。</p>
             </div>
-            <form class="newsletter-form">
-                <input type="email" placeholder="输入你的邮箱">
-                <button class="button" type="button">订阅</button>
+            <form id="contactForm" class="contact-form">
+                <input type="text" id="contactName" name="name" placeholder="你的姓名" required>
+                <input type="email" id="contactEmail" name="email" placeholder="你的邮箱" required>
+                <input type="tel" id="contactPhone" name="phone" placeholder="你的手机号（可选）">
+                <textarea id="contactMessage" name="message" rows="4" placeholder="你的消息" required></textarea>
+                <button class="button" type="submit">发送消息</button>
+                <p class="form-success" id="contactSuccess" aria-hidden="true"></p>
             </form>
+        </section>
+
+        <section class="works" id="works">
+            <div>
+                <h2>我的作品</h2>
+                <p>这里展示我做过的一些小项目与小游戏，点击“打开”查看演示或说明。</p>
+            </div>
+            <div class="works-grid">
+                <!-- 作品卡由本地 CMS 注入（localStorage: cms_games） -->
+            </div>
         </section>
     </main>
 
